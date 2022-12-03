@@ -1,7 +1,7 @@
 # MD3View
 ![Ravenclaw Model in MD3View](https://img.imgur.com/88shPWm.png)
 
-Quake III MD3/MDRmodel viewer and MD3/GLM exporter. Provides a way to visualize model files and export them to different formats from some id Tech 3 games.
+Quake III MD3/MDR model viewer and MD3/GLM exporter. Provides a way to visualize model files and export them to different formats from some id Tech 3 games.
 
 Features:
 

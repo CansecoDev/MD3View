@@ -80,6 +80,49 @@ void NormalToLatLong( const vec3_t normal, byte bytes[2] )
 	}
 }
 
+
+/*
+** LatLongToNormal -- Archangel
+**
+** We use two byte encoded normals in some space critical applications.
+** Lat = 0 at (1,0,0) to 360 (-1,0,0), encoded in 8-bit sine table format
+** Lng = 0 at (0,0,1) to 180 (0,0,-1), encoded in 8-bit sine table format
+**
+*/
+void LatLongToNormal( short *latlong, float normal[3] )
+{
+	byte lat,lng;
+	float fLat, fLng;
+	// decode the lat/lng normal to a 3 float normal
+	lat = ( *latlong >> 8 ) & 0xff;
+	lng = ( *latlong & 0xff );
+
+	if ( lat == 0 && lng == 0 )
+	{
+		// normal = 0,0,1
+		normal[0] = 0;
+		normal[1] = 0;
+		normal[2] = 1;
+	}
+	else if ( lat == 0 && lng == 128 )
+	{
+		// normal = 0,0,-1
+		normal[0] = 0;
+		normal[1] = 0;
+		normal[2] = -1;
+	}
+	else
+	{
+		fLat = (float)( lat * M_PI/128 );
+		fLng = (float)( lng * M_PI/128 );
+
+		normal[0] = cos(fLat) * sin(fLng);
+		normal[1] = sin(fLat) * sin(fLng);
+		normal[2] = cos(fLng);
+	}
+}
+
+
 double VectorLength( const vec3_t v ) 
 {
 	double	length;

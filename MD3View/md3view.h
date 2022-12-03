@@ -29,7 +29,8 @@ this should be the only file included by system dependent code, but that rule is
 
 //this is the caption name & the name in the about box
 //v1.61 (mrwonko) - Skewing-free GLM export fix
-#define FILENAME "MD3View v1.61"
+//v1.62 (Archangel) - Fixed bounding box for animated models and added option for display of vertex normals
+#define FILENAME "MD3View v1.62"
 
 /*! 
 enumeration of various display modes that the ogl rendering engine supports. line refers
@@ -72,6 +73,7 @@ typedef struct
 	bool            animate;
 	bool			bUseAlpha;
 	bool			bBBox;
+	bool			bNormals; // Archangel		
 	
 /*	MD3GL		*	glmdl;
 	MD3			*	model;
@@ -197,21 +199,23 @@ loads a new costum skin and sets all the models to it
 void importNewSkin( char *fullName );
 bool ParseSequenceLockFile(LPCSTR psFilename);
 
-#define sRAVEN "\n\n(This version heavily customised by Ste Cork @/4 Raven Software)"
+#define sRAVEN "\n\n(v1.6  : Heavily customised by Ste Cork @/4 Raven Software)"
 
 //mrwonko: shamelessly added me to credits. :)
+//Archangel:  updated credits.
 #define ABOUT_TEXT          "\n\n " FILENAME "\t\n\n" \
-							"A q3test model viewer\t\n\n" \
+							"A Quake III model viewer\t\n\n" \
 				            "started by Sander 'FireStorm' van Rossen\t\n" \
 							"& Matthew 'pagan' Baranowski\t\n\n" \
 							"a Mental Vortex production\t\n\n" \
 							"For more information go to: \t\n" \
 							"mvwebsite.hypermart.net\t\n\n" \
-							"SOURCE CODE IS FREELY AVAILABLE!!!\n\n" \
+							"SOURCE CODE IS FREELY AVAILABLE!!!\n" \
 							"Archived sources and version executables at:\n" \
 							"https://github.com/CansecoDev/MD3View" \
 							sRAVEN \
-							"\n\n(v1.61: Skewing-free GLM export fix by Mr. Wonko)"\
+							"\n(v1.61: Skewing-free GLM export fix by Mr. Wonko)"\
+							"\n(v1.62: Bounding box fix and vertex normals by Archangel)"
 
 extern int giTagMenuSubtractValue_Torso;
 extern int giTagMenuSubtractValue_Head;

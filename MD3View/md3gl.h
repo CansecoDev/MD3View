@@ -21,6 +21,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "mdr.h"
 
+// Archangel - for drawing normals
+//********************************
+struct Normal
+{
+	union
+	{
+		struct 
+		{
+			float n0,n1,n2;
+		};
+		float e[3];
+	};
+};
+//********************************
+
+extern void LatLongToNormal( short *latlong, float normal[3] );  // Archangel
+
 typedef struct
 {
 	unsigned char          *Data;              // actual texture bitmap

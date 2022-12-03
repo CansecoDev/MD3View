@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -26,16 +26,15 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Menu
 //
 
-IDR_MENU1 MENU DISCARDABLE 
+IDR_MENU1 MENU 
 BEGIN
     POPUP "File"
     BEGIN
         MENUITEM "Open..\tCtrl-O",              ID_FILE_OPEN
         MENUITEM "Export as MD3",               ID_FILE_SAVE_MD3
         MENUITEM "Export as GLM (Ghoul 2)",     ID_FILE_SAVE_G2
-        MENUITEM "Export as GLM (Ghoul 2) *without* 90-degree skewing ( added for JKA )", 
-                                                ID_FILE_SAVE_G2_PERFECT
-        MENUITEM "Export to Raw...",            ID_FILE_EXPORTTORAW, GRAYED
+        MENUITEM "Export as GLM (Ghoul 2) *without* 90-degree skewing ( added for JKA )", ID_FILE_SAVE_G2_PERFECT
+        MENUITEM "Export to Raw...",            ID_FILE_EXPORTTORAW
         MENUITEM "Import skin..",               ID_FILE_IMPORTSKIN
         MENUITEM "Import Sequence file",        ID_FILE_IMPORTMULTISEQ
         MENUITEM "E&xit\tCtrl-X",               ID_FILE_EXIT
@@ -68,6 +67,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Toggle FOV 80/90/10\tCTRL-F", ID_VIEW_FOVTOGGLE
         MENUITEM "Toggle &Bounding-box\tCTRL-B", ID_VIEW_BOUNDSTOGGLE
+        MENUITEM SEPARATOR
+        MENUITEM "Toggle &Vertex Normals\tCTRL-V", ID_VIEW_VERTEXNORMALS
+        MENUITEM "Decrease Normal Scale Factor\t[", ID_VIEW_DECREASENORMALSCALE
+        MENUITEM "Increase Normal Scale Factor\t]", ID_VIEW_INCREASENORMALSCALE
+        MENUITEM "Reset Normal Scale Factor\t\\", ID_VIEW_RESETNORMALSCALE
         MENUITEM SEPARATOR
         MENUITEM "LOD1\tF1",                    ID_LOD0
         MENUITEM "LOD2\tF2",                    ID_LOD1
@@ -104,14 +108,14 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_APP                 ICON    DISCARDABLE     "ID_APP.ico"
+IDI_APP                 ICON                    "ID_APP.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FILE_EXPORTTORAW     "This is pretty pointless really"
     ID_VIEW_LOADEDSTUFF     "Shows stuff like tags, TGA filenames etc..."
@@ -123,7 +127,7 @@ BEGIN
     ID_FACE_RESANIM         "(Only works if a head model is loaded)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FILE_SAVE_MD3        "(Export model as MD3 format)"
     ID_FILE_IMPORTMULTISEQ  "Used fr importing a multi-sequence lock file"
@@ -136,7 +140,7 @@ BEGIN
     ID_PICMIP0              "Change all textures to use picmip 0"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_PICMIP1              "Re-upload all textures at picmip 1"
     ID_PICMIP2              "reload all textures to picmip 2"
@@ -145,6 +149,11 @@ BEGIN
                             "View as both textured and with wireframe lines on"
     ID_VIEW_BOUNDSTOGGLE    "Toggles the drawing of bounding boxes"
     ID_FILE_SAVE_G2_PERFECT "(Export model as Ghoul2, but WITHOUT the 90-degree skewing)"
+    ID_VIEW_VERTEXNORMALS   "Toggles the drawing of vertex normals"
+    ID_VIEW_DECREASENORMALSCALE 
+                            "Decreases normal scale factor by 25% (cannot be < 1.0)"
+    ID_VIEW_INCREASENORMALSCALE "Increases normal scale factor by 25%"
+    ID_VIEW_RESETNORMALSCALE "Resets normal scale factor to 1.0"
 END
 
 #endif    // English (U.S.) resources
@@ -166,18 +175,18 @@ LANGUAGE LANG_DUTCH, SUBLANG_DUTCH
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -191,7 +200,7 @@ END
 // Accelerator
 //
 
-IDR_ACCELERATOR1 ACCELERATORS DISCARDABLE 
+IDR_ACCELERATOR1 ACCELERATORS 
 BEGIN
     ",",            ID_FRAME_DW,            ASCII,  NOINVERT
     ".",            ID_FRAME_UP,            ASCII,  NOINVERT
@@ -219,6 +228,10 @@ BEGIN
     "U",            ID_VIEWUPPERANIM_LOCK,  VIRTKEY, ALT, NOINVERT
     "U",            ID_VIEWUPPERANIM_INC,   VIRTKEY, SHIFT, NOINVERT
     "V",            ID_VIEWPOS_RESET,       VIRTKEY, SHIFT, NOINVERT
+    "V",            ID_VIEW_VERTEXNORMALS,  VIRTKEY, CONTROL, NOINVERT
+	VK_OEM_4,		ID_VIEW_DECREASENORMALSCALE,	VIRTKEY, NOINVERT
+	VK_OEM_6,		ID_VIEW_INCREASENORMALSCALE,	VIRTKEY, NOINVERT
+	VK_OEM_5,		ID_VIEW_RESETNORMALSCALE,	VIRTKEY, NOINVERT
     VK_DOWN,        ID_ANIMATION_REWIND,    VIRTKEY, NOINVERT
     VK_ESCAPE,      ID_FILE_EXIT,           VIRTKEY, NOINVERT
     VK_F1,          ID_LOD0,                VIRTKEY, NOINVERT
@@ -230,8 +243,7 @@ BEGIN
     VK_F4,          ID_FACE_INCANIM,        VIRTKEY, NOINVERT
     VK_F4,          ID_PICMIP3,             VIRTKEY, CONTROL, NOINVERT
     VK_F4,          ID_FACE_RESANIM,        VIRTKEY, SHIFT, NOINVERT
-    VK_F4,          ID_FACE_DECANIM,        VIRTKEY, SHIFT, CONTROL, 
-                                                    NOINVERT
+    VK_F4,          ID_FACE_DECANIM,        VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_F5,          ID_PICMIP4,             VIRTKEY, CONTROL, NOINVERT
     VK_F6,          ID_PICMIP5,             VIRTKEY, CONTROL, NOINVERT
     VK_F7,          ID_PICMIP6,             VIRTKEY, CONTROL, NOINVERT
@@ -251,7 +263,7 @@ END
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_FILESTRING          "Model files (*.MDR)(*.MD3)|*.md?|"
     IDS_RAWFILEFILTER       ".raw files (*.raw)|*.raw|"

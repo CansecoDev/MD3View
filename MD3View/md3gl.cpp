@@ -28,6 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "matcomp.h"
 
 
+// Archangel - for drawing normals
+float g_NormDrawSclFactor = 1.0;
+
 /*
 sets up an orthogonal projection matrix
 */
@@ -174,6 +177,15 @@ void normalize( Vec3 n )
 	for (i=0 ; i< 3 ; i++) n[i] /= length;	
 }
 
+LPCSTR vtos(vec3_t v3)
+{
+	return va("%.3f %.3f %.3f",v3[0],v3[1],v3[2]);
+}
+
+LPCSTR v2tos(vec2_t v2)
+{
+	return va("%.3f %.3f",v2[0],v2[1]);
+}
 
 /* --------------------------------------- new gl code ------------------------------------------------- */
 // Copyright 1999-200 Raven Software
@@ -342,29 +354,33 @@ void RB_SurfaceAnim( md4Surface_t *surface, gl_model *pModel )	// pModel just fo
 //=============================
 	// now draw it...
 	//
+	// Archangel -- modified the code herein to get "Textured & Wireframe" to work for MDR
+	//------------------------------------------------------------------------------------
 	{
 		glPushAttrib(GL_POLYGON_BIT);	// preserves GL_CULL_FACE && GL_CULL_FACE_MODE
 
-		if (bIsWireFrame())
+		if (bIsWireFrame() && !bIsTextured())
 		{
 			glEnable(GL_CULL_FACE);
 		}
 
-		for (int iPass=0; iPass<(bIsWireFrame()?2:1); iPass++)
+		for (int iPass=0; iPass<((bIsWireFrame() && !bIsTextured())?2:1); iPass++)
 		{
-			if (bIsWireFrame())
+			if (bIsWireFrame() && !bIsTextured())
 			{
+				// standard wireframe...
+				//
 				if (!iPass)
 				{
 					glCullFace(GL_BACK);
-					glColor3f(0.5,0.5,0.5);				
+					glColor3f(0.5,0.5,0.5);
 				}
 				else
 				{
 					glCullFace(GL_FRONT);
 					glColor3f( 1,1,1);				
 				}
-			}			
+			}
 			
 			glBegin( GL_TRIANGLES );
 			{				
@@ -386,6 +402,206 @@ void RB_SurfaceAnim( md4Surface_t *surface, gl_model *pModel )	// pModel just fo
 				}				
 			}
 			glEnd();
+			
+		}
+
+		// draw wire overlay when textured
+		if (bIsWireFrame() && bIsTextured())
+		{
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
+			glDisable(GL_LIGHTING);					
+
+			glLineWidth(2);
+			glColor3f(1,1,0);	// yellow
+
+			for (int i=0; i<surface->numTriangles*3; i+=3)
+			{	
+				glBegin( GL_LINE_LOOP );
+				{
+					glVertex3fv	 ( tess.xyz		 [tess.indexes[i+0]] );
+					glVertex3fv	 ( tess.xyz		 [tess.indexes[i+1]] );
+					glVertex3fv	 ( tess.xyz		 [tess.indexes[i+2]] );	
+				}
+				glEnd();				
+			}			
+			glLineWidth(1);
+
+			glEnable(GL_TEXTURE_2D);
+			glEnable(GL_BLEND);
+		}
+		//------------------------------------------------------------------------------------
+
+		// draw MDR bounding box -- Archangel
+		if ( mdview.bBBox )
+		{
+			glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
+			{
+				glDisable(GL_TEXTURE_2D);
+				glDisable(GL_LIGHTING);
+				glDisable(GL_BLEND);
+
+
+				// uber-hackery, I don't care about this program any more, so...
+				//
+				#define VectorSet(v, x, y, z)	((v)[0]=(x), (v)[1]=(y), (v)[2]=(z))
+
+				int iFrame = pModel->currentFrame; // Archangel
+
+				vec3_t v3Corners[8];
+
+				vec3_t &v3Mins = frame->bounds[0];
+				vec3_t &v3Maxs = frame->bounds[1];
+				
+				VectorSet(v3Corners[0],v3Mins[0],v3Mins[1],v3Mins[2]);
+				VectorSet(v3Corners[1],v3Maxs[0],v3Mins[1],v3Mins[2]);
+				VectorSet(v3Corners[2],v3Maxs[0],v3Mins[1],v3Maxs[2]);
+				VectorSet(v3Corners[3],v3Mins[0],v3Mins[1],v3Maxs[2]);
+				VectorSet(v3Corners[4],v3Mins[0],v3Maxs[1],v3Maxs[2]);
+				VectorSet(v3Corners[5],v3Maxs[0],v3Maxs[1],v3Maxs[2]);
+				VectorSet(v3Corners[6],v3Maxs[0],v3Maxs[1],v3Mins[2]);
+				VectorSet(v3Corners[7],v3Mins[0],v3Maxs[1],v3Mins[2]);
+
+				glColor3f(0.8f,0.8f,0.8f);//1,1,1);
+				/*				
+				glBegin(GL_LINE_LOOP);
+				{
+					glVertex3fv(v3Corners[0]);
+					glVertex3fv(v3Corners[1]);
+					glVertex3fv(v3Corners[2]);
+					glVertex3fv(v3Corners[3]);
+
+					glVertex3fv(v3Corners[4]);
+					glVertex3fv(v3Corners[5]);
+					glVertex3fv(v3Corners[6]);
+					glVertex3fv(v3Corners[7]);
+				}
+				glEnd();
+				*/
+
+				// new version, draw the above shape, but without 3 of the lines (and therefore without GL_LINE_LOOP)
+				//	because otherwise the white lines fight with the coloured ones below...  (aesthetics)
+				//
+				glBegin(GL_LINES);
+				{
+					glVertex3fv(v3Corners[2]);
+					glVertex3fv(v3Corners[3]);
+
+					glVertex3fv(v3Corners[3]);
+					glVertex3fv(v3Corners[4]);
+
+					glVertex3fv(v3Corners[4]);
+					glVertex3fv(v3Corners[5]);
+
+					glVertex3fv(v3Corners[5]);
+					glVertex3fv(v3Corners[6]);
+
+					glVertex3fv(v3Corners[6]);
+					glVertex3fv(v3Corners[7]);
+				}
+				glEnd();
+
+				// draw the thicker lines for the 3 dimension axis...
+				//
+				glLineWidth(3);
+				{
+					// X...
+					//
+					glColor3f(1,0,0);
+					glBegin(GL_LINES);
+					{
+						glVertex3fv(v3Corners[0]);
+						glVertex3fv(v3Corners[1]);
+					}
+					glEnd();
+
+					// Y...
+					//
+	//				glColor3f(0,1,0);
+					glColor3f(0,0,1);	// err.... dunno, but this comes out the right colour now. Quake axis tilt?
+					glBegin(GL_LINES);
+					{
+						glVertex3fv(v3Corners[1]);
+						glVertex3fv(v3Corners[2]);
+					}
+					glEnd();
+
+					// Z...
+					//
+	//				glColor3f(0,0,1);
+					glColor3f(0,1,0);	// err.... dunno, but this comes out the right colour now. Quake axis tilt?
+					glBegin(GL_LINES);
+					{
+						glVertex3fv(v3Corners[7]);
+						glVertex3fv(v3Corners[0]);
+					}
+					glEnd();
+				}
+				glLineWidth(1);
+
+				// now draw the coords...
+				//
+				for (int i=0; i<sizeof(v3Corners)/sizeof(v3Corners[0]); i++)
+				{
+					LPCSTR psCoordString = vtos(v3Corners[i]);
+						
+					Text_Display(psCoordString,v3Corners[i],200,70,0);//228/2,107/2,35/2);
+				}
+
+				// now draw the 3 dimensions (sizes)...
+				//
+				float fXDim = v3Maxs[0] - v3Mins[0];
+				float fYDim = v3Maxs[1] - v3Mins[1];
+				float fZDim = v3Maxs[2] - v3Mins[2];
+
+				vec3_t v3Pos;		
+
+				// X...
+				//
+				VectorAdd	(v3Corners[0],v3Corners[1],v3Pos);
+				VectorScale	(v3Pos,0.5,v3Pos);
+				Text_Display(va(" X = %.3f",fXDim),v3Pos,255,128,128);	// ruler-pink
+				//
+				// Y...
+				//
+				VectorAdd	(v3Corners[7],v3Corners[0],v3Pos);
+				VectorScale	(v3Pos,0.5,v3Pos);
+				Text_Display(va(" Y = %.3f",fYDim),v3Pos,255,128,128);
+				//
+				// Z...
+				//
+				VectorAdd	(v3Corners[1],v3Corners[2],v3Pos);
+				VectorScale	(v3Pos,0.5,v3Pos);
+				Text_Display(va(" Z = %.3f",fZDim),v3Pos,255,128,128);
+			}
+			glPopAttrib();
+		}
+
+		// draw MDR normals -- Archangel
+		if ( mdview.bNormals )  
+		{
+			// do these 4 in case we're doing normals but not wireframe...
+			//
+			
+			glPushAttrib(GL_ENABLE_BIT);
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
+			glDisable(GL_LIGHTING);
+			
+			for (int n = 0; n< surface->numVerts; n++)
+			{
+				glColor3f(1,0.5,1);	// purple
+				glBegin(GL_LINES);
+				{
+					glVertex3fv(	tess.xyz[baseVertex + n] );
+					glVertex3f (	tess.xyz[baseVertex + n][0] + ( tess.normal[baseVertex + n][0] * g_NormDrawSclFactor ),
+									tess.xyz[baseVertex + n][1] + ( tess.normal[baseVertex + n][1] * g_NormDrawSclFactor ),
+									tess.xyz[baseVertex + n][2] + ( tess.normal[baseVertex + n][2] * g_NormDrawSclFactor )
+								);
+				}				
+				glEnd();				
+			}
+			glPopAttrib();
 		}
 
 		glPopAttrib();
@@ -544,17 +760,6 @@ shaderCommands_t* Freeze_Surface( md4Surface_t *surface, int iFrame )	// pModel 
 #endif
 
 
-LPCSTR vtos(vec3_t v3)
-{
-	return va("%.3f %.3f %.3f",v3[0],v3[1],v3[2]);
-}
-
-LPCSTR v2tos(vec2_t v2)
-{
-	return va("%.3f %.3f",v2[0],v2[1]);
-}
-
-
 // this is the only actual (MD3) model draw code, the one that everything else calls...
 //
 void draw_gl_mesh( gl_mesh *mesh, Vec3 *vecs, gl_model* pModel )
@@ -664,13 +869,12 @@ void draw_gl_mesh( gl_mesh *mesh, Vec3 *vecs, gl_model* pModel )
 
 				md3BoundFrame_t *pMD3BoundFrames;			 // 2d array of boundary frames size [iNumFrames][iNumTags]
 	*/
-				int iFrame = 0;
+				int iFrame = pModel->currentFrame; // Archangel
 
 				vec3_t v3Corners[8];
 
 				vec3_t &v3Mins = pModel->pMD3BoundFrames[ iFrame ].bounds[0];
 				vec3_t &v3Maxs = pModel->pMD3BoundFrames[ iFrame ].bounds[1];
-
 				
 				VectorSet(v3Corners[0],v3Mins[0],v3Mins[1],v3Mins[2]);
 				VectorSet(v3Corners[1],v3Maxs[0],v3Mins[1],v3Mins[2]);
@@ -793,6 +997,44 @@ void draw_gl_mesh( gl_mesh *mesh, Vec3 *vecs, gl_model* pModel )
 			}
 			glPopAttrib();
 		}
+		
+		if ( mdview.bNormals )  // draw normals -- Archangel
+		{
+			int iFrame = pModel->currentFrame;
+
+			// do these 4 in case we're doing normals but not wireframe...
+			//
+			glPushAttrib(GL_ENABLE_BIT);
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
+			glDisable(GL_LIGHTING);
+
+			// now we need to get the vertex normals
+			std::vector<Normal> vNormals;
+			vNormals.resize( mesh->iNumVertices );
+			short *tempLatLng = NULL;
+
+			for (int n = 0; n < (int)mesh->iNumVertices; n++)
+			{
+				tempLatLng = &(mesh->meshFrames[iFrame].pNormalIndexes[n]);
+				LatLongToNormal( tempLatLng, vNormals[n].e );
+			}
+			
+			for (int iNormal = 0; iNormal< (int)mesh->iNumVertices; iNormal++)
+			{
+				glColor3f(1,0.5,1);	// purple
+				glBegin(GL_LINES);
+				{
+					glVertex3fv(	vecs[iNormal] );
+					glVertex3f (	vecs[iNormal][0] + ( vNormals[iNormal].e[0] * g_NormDrawSclFactor ),
+									vecs[iNormal][1] + ( vNormals[iNormal].e[1] * g_NormDrawSclFactor ),
+									vecs[iNormal][2] + ( vNormals[iNormal].e[2] * g_NormDrawSclFactor )
+								);
+				}
+				glEnd();				
+			}
+			glPopAttrib();
+		}		
 
 		glPopAttrib();
 		glColor3f( 1,1,1);		
@@ -861,7 +1103,7 @@ void draw_gl_model( gl_model *model )
 			pModel->iRenderedTris = 0;
 			pModel->iRenderedVerts= 0;
 
-			pModel->currentFrame = model->currentFrame;	// since MD3 LODs are seperate models, copy what's needed
+			pModel->currentFrame = model->currentFrame;	// since MD3 LODs are separate models, copy what's needed
 
 			int mesh_num = pModel->iNumMeshes;
 

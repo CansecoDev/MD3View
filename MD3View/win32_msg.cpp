@@ -32,6 +32,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 extern HINSTANCE WinhInstance;
 extern NodeSequenceInfo tagMenuList;
+extern float g_NormDrawSclFactor;  // Archangel
+
 HDC  hDC_;
 
 bool sys_rbuttondown = false;
@@ -1415,6 +1417,31 @@ void SysOnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 			InvalidateRect( hwnd, NULL, FALSE );
 			break;
 
+		// Archangel
+		//**************************************
+		case ID_VIEW_VERTEXNORMALS: 
+			mdview.bNormals = !mdview.bNormals;
+			InvalidateRect( hwnd, NULL, FALSE );
+			break;
+
+		case ID_VIEW_DECREASENORMALSCALE: 
+			g_NormDrawSclFactor /= 1.25;
+			if ( g_NormDrawSclFactor < 1.0 )
+				g_NormDrawSclFactor = 1.0;
+			InvalidateRect( hwnd, NULL, FALSE );
+			break;
+
+		case ID_VIEW_INCREASENORMALSCALE: 
+			g_NormDrawSclFactor *= 1.25;
+			InvalidateRect( hwnd, NULL, FALSE );
+			break;
+
+		case ID_VIEW_RESETNORMALSCALE: 
+			g_NormDrawSclFactor = 1.0;
+			InvalidateRect( hwnd, NULL, FALSE );
+			break;
+		//**************************************
+			
 		case ID_VIEWLOWERANIM_INC:
 			if (RunningNT() == 4)
 			{

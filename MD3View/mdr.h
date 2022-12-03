@@ -27,8 +27,13 @@ typedef int qboolean;
 #define MAX_QPATH 64
 
 // surface geometry should not exceed these limits
-#define	SHADER_MAX_VERTEXES	1000
-#define	SHADER_MAX_INDEXES	(6*SHADER_MAX_VERTEXES)
+//#define	SHADER_MAX_VERTEXES	1000
+//#define	SHADER_MAX_INDEXES	(6*SHADER_MAX_VERTEXES)
+//Archangel: changing limits so that models exceeding above limits will still load in viewer but produce a warning
+#define	SHADER_MAX_VERTEXES			1048576
+#define	SHADER_MAX_INDEXES			(6*SHADER_MAX_VERTEXES)
+#define	SHADER_MAX_VERTEXES_SPEC	1000
+#define	SHADER_MAX_INDEXES_SPEC		(6*SHADER_MAX_VERTEXES_SPEC)
 
 
 #define MD4_IDENT			(('5'<<24)+('M'<<16)+('D'<<8)+'R')

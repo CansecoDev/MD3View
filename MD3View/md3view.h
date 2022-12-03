@@ -30,7 +30,8 @@ this should be the only file included by system dependent code, but that rule is
 //this is the caption name & the name in the about box
 //v1.61 (mrwonko) - Skewing-free GLM export fix
 //v1.62 (Archangel) - Fixed bounding box for animated models and added option for display of vertex normals
-#define FILENAME "MD3View v1.62"
+//v1.63 (Archangel) - Allow loading models that exceed legacy Quake III limits
+#define FILENAME "MD3View v1.63"
 
 /*! 
 enumeration of various display modes that the ogl rendering engine supports. line refers
@@ -216,6 +217,7 @@ bool ParseSequenceLockFile(LPCSTR psFilename);
 							sRAVEN \
 							"\n(v1.61: Skewing-free GLM export fix by Mr. Wonko)"\
 							"\n(v1.62: Bounding box fix and vertex normals by Archangel)"
+							"\n(v1.63: Allow models exceeding Q3 vertex limits by Archangel)"
 
 extern int giTagMenuSubtractValue_Torso;
 extern int giTagMenuSubtractValue_Head;

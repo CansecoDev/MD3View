@@ -1555,7 +1555,17 @@ const char *loadmesh( gl_mesh& newMesh , FILE* F )
 	}
 }
 
+void Warning(char *error, ...)
+{
+	va_list argptr;
+	char    text[4096];
 
+	va_start(argptr, error);
+	vsprintf(text, error, argptr);
+	va_end(argptr);
+
+	MessageBox(NULL, text, "Warning", MB_OK);
+}
 
 static qboolean R_LoadMD4( model_t *mod, void *buffer, const char *mod_name ) 
 {
@@ -1653,15 +1663,26 @@ static qboolean R_LoadMD4( model_t *mod, void *buffer, const char *mod_name )
 			
 			if ( surf->numVerts > SHADER_MAX_VERTEXES ) 
 			{
-				Error ("R_LoadMD4: %s has more than %i verts on a surface (%i)",
+				Error ("R_LoadMD4: %s has more than %i verts on a surface (%i).",
 					mod_name, SHADER_MAX_VERTEXES, surf->numVerts );
 				return qfalse;
 			}
 			if ( surf->numTriangles*3 > SHADER_MAX_INDEXES ) 
 			{
-				Error ("R_LoadMD4: %s has more than %i triangles on a surface (%i)",
+				Error ("R_LoadMD4: %s has more than %i triangles on a surface (%i).",
 						mod_name, SHADER_MAX_INDEXES / 3, surf->numTriangles );
 				return qfalse;
+			}
+		
+			if (surf->numVerts > SHADER_MAX_VERTEXES_SPEC)
+			{
+				Warning("R_LoadMD4: %s has more than %i verts on a surface (%i). This model may not load in older engines.",
+					mod_name, SHADER_MAX_VERTEXES_SPEC, surf->numVerts);
+			}
+			if (surf->numTriangles * 3 > SHADER_MAX_INDEXES_SPEC)
+			{
+				Warning("R_LoadMD4: %s has more than %i triangles on a surface (%i). This model may not load in older engines.",
+					mod_name, SHADER_MAX_INDEXES_SPEC / 3, surf->numTriangles);
 			}
 		
 			// change to surface identifier

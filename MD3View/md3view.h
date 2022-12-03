@@ -215,8 +215,8 @@ bool ParseSequenceLockFile(LPCSTR psFilename);
 							"Archived sources and version executables at:\n" \
 							"https://github.com/CansecoDev/MD3View" \
 							sRAVEN \
-							"\n(v1.61: Skewing-free GLM export fix by Mr. Wonko)"\
-							"\n(v1.62: Bounding box fix and vertex normals by Archangel)"
+							"\n(v1.61: Skewing-free GLM export fix by Mr. Wonko)" \
+							"\n(v1.62: Bounding box fix and vertex normals by Archangel)" \
 							"\n(v1.63: Allow models exceeding Q3 vertex limits by Archangel)"
 
 extern int giTagMenuSubtractValue_Torso;

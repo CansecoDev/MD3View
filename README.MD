@@ -39,7 +39,7 @@ Features:
 
 #### Procedure:
 
-- Open the `MD3View.vcproj` with Visual Studio 2022 and build it after selecting `Release`.
+- Open the `MD3View.sln` solution with Visual Studio 2022 and build it after selecting `Release`.
 
 ## Copyright
 

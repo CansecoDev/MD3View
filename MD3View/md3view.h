@@ -28,7 +28,8 @@ this should be the only file included by system dependent code, but that rule is
 #define _MD3_VIEW_H_
 
 //this is the caption name & the name in the about box
-#define FILENAME "MD3View v1.6 [mrw]" //mrwonko: added my prefix to version
+//v1.61 (mrwonko) - Skewing-free GLM export fix
+#define FILENAME "MD3View v1.61"
 
 /*! 
 enumeration of various display modes that the ogl rendering engine supports. line refers
@@ -207,8 +208,10 @@ bool ParseSequenceLockFile(LPCSTR psFilename);
 							"For more information go to: \t\n" \
 							"mvwebsite.hypermart.net\t\n\n" \
 							"SOURCE CODE IS FREELY AVAILABLE!!!\n\n" \
+							"Archived sources and version executables at:\n" \
+							"https://github.com/CansecoDev/MD3View" \
 							sRAVEN \
-							"\n(Skewing-free GLM export fix by Mr. Wonko)"
+							"\n\n(v1.61: Skewing-free GLM export fix by Mr. Wonko)"\
 
 extern int giTagMenuSubtractValue_Torso;
 extern int giTagMenuSubtractValue_Head;

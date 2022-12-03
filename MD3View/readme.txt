@@ -1,4 +1,4 @@
-- MD3View v1.6
+- MD3View v1.61
 
 Quake III MD3/MDRmodel viewer and MD3/GLM exporter. Provides a way to visualize model files and export them to different formats from some id Tech 3 games.
 
@@ -29,3 +29,8 @@ You now should have something like this:
 
 Copyright (C) 2010-2011 Matthew Baranowski, Sander van Rossen & Raven Software.
 Licensed under GPLv2, see LICENSE.MD for details.
+
+- Changelog
+
+1.6  Original release
+1.61 Skewing-free GLM export fix by Mr. Wonko

@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# MD3View
+MD3View_GL_report.txt

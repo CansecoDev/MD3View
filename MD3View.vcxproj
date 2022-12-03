@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{144114CF-2224-4770-A0C8-E87754FC2ED9}</ProjectGuid>
+    <RootNamespace>MD3View</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>17.0.33122.133</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release/MD3View.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <PreprocessorDefinitions>RAVEN;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/MD3View.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release/MD3View.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Release/MD3View.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>.\Release/MD3View.map</MapFileName>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/MD3View.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug/MD3View.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>RAVEN;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/MD3View.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Debug/MD3View.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/MD3View.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug/MD3View.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="animation.cpp" />
+    <ClCompile Include="bmp.cpp" />
+    <ClCompile Include="clipboard.cpp" />
+    <ClCompile Include="DiskIO.cpp" />
+    <ClCompile Include="drag.cpp" />
+    <ClCompile Include="Error.cpp" />
+    <ClCompile Include="g2export.cpp" />
+    <ClCompile Include="jpeg6\jcomapi.c" />
+    <ClCompile Include="jpeg6\jdapimin.c" />
+    <ClCompile Include="jpeg6\jdapistd.c" />
+    <ClCompile Include="jpeg6\jdatasrc.c" />
+    <ClCompile Include="jpeg6\jdcoefct.c" />
+    <ClCompile Include="jpeg6\jdcolor.c" />
+    <ClCompile Include="jpeg6\jddctmgr.c" />
+    <ClCompile Include="jpeg6\jdhuff.c" />
+    <ClCompile Include="jpeg6\jdinput.c" />
+    <ClCompile Include="jpeg6\jdmainct.c" />
+    <ClCompile Include="jpeg6\jdmarker.c" />
+    <ClCompile Include="jpeg6\jdmaster.c" />
+    <ClCompile Include="jpeg6\jdpostct.c" />
+    <ClCompile Include="jpeg6\jdsample.c" />
+    <ClCompile Include="jpeg6\jdtrans.c" />
+    <ClCompile Include="jpeg6\jerror.c" />
+    <ClCompile Include="jpeg6\jidctflt.c" />
+    <ClCompile Include="jpeg6\jmemmgr.c" />
+    <ClCompile Include="jpeg6\jmemnobs.c" />
+    <ClCompile Include="jpeg6\jutils.c" />
+    <ClCompile Include="jpeg_interface.cpp" />
+    <ClCompile Include="MatComp.c" />
+    <ClCompile Include="matrix4.cpp" />
+    <ClCompile Include="md3gl.cpp" />
+    <ClCompile Include="md3IO.cpp" />
+    <ClCompile Include="md3view.cpp" />
+    <ClCompile Include="nodedictionary.cpp" />
+    <ClCompile Include="nodesequence.cpp" />
+    <ClCompile Include="oddbits.cpp" />
+    <ClCompile Include="png\png.cpp" />
+    <ClCompile Include="Script.cpp" />
+    <ClCompile Include="targa.cpp" />
+    <ClCompile Include="TEXT.CPP" />
+    <ClCompile Include="texture_res.cpp" />
+    <ClCompile Include="vect3.cpp" />
+    <ClCompile Include="widgets.cpp" />
+    <ClCompile Include="win32_driver.cpp" />
+    <ClCompile Include="win32_msg.cpp" />
+    <ClCompile Include="win32_treeview.cpp" />
+    <ClCompile Include="zlib\adler32.c" />
+    <ClCompile Include="zlib\crc32.cpp" />
+    <ClCompile Include="zlib\deflate.c" />
+    <ClCompile Include="zlib\infblock.c" />
+    <ClCompile Include="zlib\infcodes.c" />
+    <ClCompile Include="zlib\inffast.c" />
+    <ClCompile Include="zlib\inflate.c" />
+    <ClCompile Include="zlib\inftrees.c" />
+    <ClCompile Include="zlib\infutil.c" />
+    <ClCompile Include="zlib\trees.c" />
+    <ClCompile Include="zlib\zutil.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="md3view.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="animation.h" />
+    <ClInclude Include="Base.h" />
+    <ClInclude Include="BaseMesh.h" />
+    <ClInclude Include="bmp.h" />
+    <ClInclude Include="clipboard.h" />
+    <ClInclude Include="DiskIO.h" />
+    <ClInclude Include="Error.h" />
+    <ClInclude Include="g2export.h" />
+    <ClInclude Include="jpeg6\jconfig.h" />
+    <ClInclude Include="jpeg6\jdct.h" />
+    <ClInclude Include="jpeg6\jdhuff.h" />
+    <ClInclude Include="jpeg6\jerror.h" />
+    <ClInclude Include="jpeg6\jinclude.h" />
+    <ClInclude Include="jpeg6\jmemsys.h" />
+    <ClInclude Include="jpeg6\jmorecfg.h" />
+    <ClInclude Include="jpeg6\jpegint.h" />
+    <ClInclude Include="jpeg6\jpeglib.h" />
+    <ClInclude Include="jpeg6\jversion.h" />
+    <ClInclude Include="jpeg_interface.h" />
+    <ClInclude Include="MatComp.h" />
+    <ClInclude Include="matrix4.h" />
+    <ClInclude Include="md3gl.h" />
+    <ClInclude Include="md3view.h" />
+    <ClInclude Include="mdr.h" />
+    <ClInclude Include="mdx_format.h" />
+    <ClInclude Include="ndictionary.h" />
+    <ClInclude Include="nsequence.h" />
+    <ClInclude Include="oddbits.h" />
+    <ClInclude Include="png\png.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Script.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="system.h" />
+    <ClInclude Include="Targa.h" />
+    <ClInclude Include="TEXT.H" />
+    <ClInclude Include="vect3.h" />
+    <ClInclude Include="zlib\deflate.h" />
+    <ClInclude Include="zlib\infblock.h" />
+    <ClInclude Include="zlib\infcodes.h" />
+    <ClInclude Include="zlib\inffast.h" />
+    <ClInclude Include="zlib\inffixed.h" />
+    <ClInclude Include="zlib\inftrees.h" />
+    <ClInclude Include="zlib\infutil.h" />
+    <ClInclude Include="zlib\trees.h" />
+    <ClInclude Include="zlib\zconf.h" />
+    <ClInclude Include="zlib\zlib.h" />
+    <ClInclude Include="zlib\zutil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="ID_APP.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

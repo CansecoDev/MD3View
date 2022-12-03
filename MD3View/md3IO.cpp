@@ -1236,9 +1236,14 @@ vec3_t *G2Exporter_Surface_GetVertCoords(int iSurfaceIndex, int iVertIndex, int 
 					//
 					//  (mega-thanks to Gil as usual)
 					//
+					// mrwonko note: No, it actually didn't. Vertex 0 and 2 were at a wrong position, 2 should be at origin, not 0. This led to a slight X- offset. But empirical methods explain a lot. Fixed that.
 					if (iVertIndex==0)
 					{
-						VectorCopy(pTag->origin,v3);
+						v3New[0] = -pTag->axis[0][iG2_TRISIDE_LONGEST];
+						v3New[1] = -pTag->axis[1][iG2_TRISIDE_LONGEST];
+						v3New[2] = -pTag->axis[2][iG2_TRISIDE_LONGEST];
+						
+						VectorSubtract(pTag->origin,v3New,v3);
 					}
 					else
 					if (iVertIndex==1)
@@ -1250,12 +1255,8 @@ vec3_t *G2Exporter_Surface_GetVertCoords(int iSurfaceIndex, int iVertIndex, int 
 						VectorAdd(pTag->origin,v3New,v3);
 					}
 					else
-					{					
-						v3New[0] = pTag->axis[0][iG2_TRISIDE_LONGEST];
-						v3New[1] = pTag->axis[1][iG2_TRISIDE_LONGEST];
-						v3New[2] = pTag->axis[2][iG2_TRISIDE_LONGEST];
-						
-						VectorSubtract(pTag->origin,v3New,v3);
+					{
+						VectorCopy(pTag->origin,v3);
 					}
 					return &v3;
 				}
@@ -1402,6 +1403,7 @@ const char *loadmesh( gl_mesh& newMesh , FILE* F )
 		UINT32		vertexStart;
 		UINT32		meshSize;
 
+		//mrwonko note: actually just 64 bytes, followed by flags, but that's always 0x00000000
 		fread(name,68,1,F);name[65]=0; //65 chars, 32-bit aligned == 68 chars in file
 		strcpy(newMesh.sName,name);
 
@@ -1410,10 +1412,10 @@ const char *loadmesh( gl_mesh& newMesh , FILE* F )
 		newMesh.iNumVertices	= get32(F);
 		newMesh.iNumTriangles	= get32(F);
 		triangleStart			= get32(F);
-		headerSize				= get32(F);
+		headerSize				= get32(F); //mrwonko note: a.k.a. OFS_SHADERS - is assumed to be after header.
 		texvecStart				= get32(F);
 		vertexStart				= get32(F);
-		meshSize				= get32(F);
+		meshSize				= get32(F); //mrwonko note: a.k.a. OFS_END
 
 		if ( ( headerSize == 108           ) && //header should be 108 bytes long
 			 ( meshSize   >  triangleStart ) &&
@@ -1429,6 +1431,7 @@ const char *loadmesh( gl_mesh& newMesh , FILE* F )
 			newMesh.iterMesh	  = new Vec3	  [newMesh.iNumVertices  ];
 			newMesh.bindings	  = new GLuint    [newMesh.iNumSkins     ];
 
+			//mrwonko note: everything is assumed to be in order
 			for (i=0;i<newMesh.iNumSkins;i++)
 			{
 				fread(texName,68,1,F);texName[65]=0;
@@ -1800,7 +1803,7 @@ bool	loadmodel( gl_model& newModel , FILE* F, char *filename )
 	{
 		newModel.modelType = MODTYPE_MD3;
 
-		char		name[69];
+		char		name[69]; //mrwonko note: actually 64 bytes + 4 byte flags
 		UINT32		maxskinNum;
 		UINT32		headerSize;
 		UINT32		tagStart;
@@ -1815,10 +1818,10 @@ bool	loadmodel( gl_model& newModel , FILE* F, char *filename )
 		newModel.iNumFrames		= get32(F);
 		newModel.iNumTags		= get32(F);
 		newModel.iNumMeshes		= get32(F);
-		maxskinNum				= get32(F);
-		headerSize				= get32(F);
+		maxskinNum				= get32(F); //mrwonko note: a.k.a. numSkins
+		headerSize				= get32(F); //mrwonko note: a.k.a. ofsFrames - assumed to be after header
 		tagStart				= get32(F);
-		tagEnd					= get32(F);
+		tagEnd					= get32(F); //mrwonko note: a.k.a. ofsSurfaces
 		fileSize				= get32(F);
 
 		if ( ( headerSize == 108           ) && //header should be 108 bytes long
@@ -1838,6 +1841,7 @@ bool	loadmodel( gl_model& newModel , FILE* F, char *filename )
 
 			newModel.pMD3BoundFrames = new md3BoundFrame_t[newModel.iNumFrames];
 			
+			//mrwonko note: frames assumed to be directly after header
 			for (i=0;i<newModel.iNumFrames;i++)
 			{
 				newModel.pMD3BoundFrames[ i ].bounds[0][0] = getFloat(F);	// mins
@@ -1854,6 +1858,14 @@ bool	loadmodel( gl_model& newModel , FILE* F, char *filename )
 				fread(newModel.pMD3BoundFrames[ i ].name,16,1,F);
 			}
 
+			//mrwonko new: sanity check
+			if(ftell(F) != tagStart)
+			{
+				ErrorBox(va("Internal logic error: Not at tag position when we should be. (%i should be %i)", ftell(F), tagStart));
+				//return false; //cannot stop here
+			}
+
+			//mrwonko note: tags assumed to be directly after frames
 			if (newModel.iNumTags!=0)
 			{
 				newModel.linkedModels = new gl_model*[newModel.iNumTags];
@@ -1898,6 +1910,13 @@ bool	loadmodel( gl_model& newModel , FILE* F, char *filename )
 				new gl_mesh[newModel.iNumMeshes];
 
 			memset(newModel.pMeshes,0,sizeof(gl_mesh) * newModel.iNumMeshes);
+
+			//mrwonko new: sanity check
+			if(ftell(F) != tagEnd)
+			{
+				ErrorBox(va("Internal logic error: Not at surface position when we should be. (%i should be %i)", ftell(F), tagEnd));
+				//return false; //cannot stop here (?)
+			}
 
 			for (i=0;i<newModel.iNumMeshes;i++)
 			{

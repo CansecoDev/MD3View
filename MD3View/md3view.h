@@ -28,7 +28,7 @@ this should be the only file included by system dependent code, but that rule is
 #define _MD3_VIEW_H_
 
 //this is the caption name & the name in the about box
-#define FILENAME "MD3View v1.6"
+#define FILENAME "MD3View v1.6 [mrw]" //mrwonko: added my prefix to version
 
 /*! 
 enumeration of various display modes that the ogl rendering engine supports. line refers
@@ -198,6 +198,7 @@ bool ParseSequenceLockFile(LPCSTR psFilename);
 
 #define sRAVEN "\n\n(This version heavily customised by Ste Cork @/4 Raven Software)"
 
+//mrwonko: shamelessly added me to credits. :)
 #define ABOUT_TEXT          "\n\n " FILENAME "\t\n\n" \
 							"A q3test model viewer\t\n\n" \
 				            "started by Sander 'FireStorm' van Rossen\t\n" \
@@ -206,7 +207,8 @@ bool ParseSequenceLockFile(LPCSTR psFilename);
 							"For more information go to: \t\n" \
 							"mvwebsite.hypermart.net\t\n\n" \
 							"SOURCE CODE IS FREELY AVAILABLE!!!\n\n" \
-							sRAVEN
+							sRAVEN \
+							"\n(Skewing-free GLM export fix by Mr. Wonko)"
 
 extern int giTagMenuSubtractValue_Torso;
 extern int giTagMenuSubtractValue_Head;
